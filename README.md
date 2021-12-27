@@ -1,11 +1,14 @@
 # gin-timeout
-****
+***
+
 ![gin-timeout](https://img.shields.io/github/license/cyj19/gin-timeout)  
 a simple and practical gin timeout Middleware
 
 
 
 ## Installation
+***
+
 1. install package
 ```
 go get -u github.com/cyj19/gin-timeout
@@ -16,6 +19,8 @@ import github.com/cyj19/gin-timeout
 ```
 
 ## Example
+***
+
 ```
 func main() {
     r := gin.Defalut()
