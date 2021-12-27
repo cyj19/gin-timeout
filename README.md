@@ -13,7 +13,7 @@ go get -u github.com/cyj19/gin-timeout
 ```
 2. import package
 ```
-import github.com/cyj19/gin-timeout
+import timeout "github.com/cyj19/gin-timeout"
 ```
 
 ## Example
