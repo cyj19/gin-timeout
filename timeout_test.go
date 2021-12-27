@@ -18,16 +18,17 @@ import (
 
 func TestContextTimeout(t *testing.T) {
 	r := gin.Default()
-	timeout := 5 * time.Second
+	timeout := 3 * time.Second
+	msg := `{"msg": "handle timeout"}`
 	opt := Option{
 		Timeout: &timeout,
 		Code:    500,
-		Msg:     []byte("handle timeout"),
+		Msg:     msg,
 	}
 
 	r.Use(ContextTimeout(opt))
 	r.GET("/ping", func(c *gin.Context) {
-		time.Sleep(6 * time.Second)
+		time.Sleep(4 * time.Second)
 		c.String(http.StatusOK, "pong")
 	})
 

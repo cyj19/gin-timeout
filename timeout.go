@@ -43,7 +43,7 @@ func ContextTimeout(opt Option) gin.HandlerFunc {
 			tw.mu.Lock()
 			tw.mu.Unlock()
 			tw.ResponseWriter.WriteHeader(opt.Code)
-			_, _ = tw.ResponseWriter.Write(opt.Msg)
+			_, _ = tw.ResponseWriter.Write([]byte(opt.Msg))
 			tw.timedOut = true
 			c.Abort()
 		case <-done:
