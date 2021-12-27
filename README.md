@@ -1,5 +1,4 @@
 # gin-timeout
-***
 
 ![gin-timeout](https://img.shields.io/github/license/cyj19/gin-timeout)  
 a simple and practical gin timeout Middleware
@@ -7,7 +6,6 @@ a simple and practical gin timeout Middleware
 
 
 ## Installation
-***
 
 1. install package
 ```
@@ -19,7 +17,6 @@ import github.com/cyj19/gin-timeout
 ```
 
 ## Example
-***
 
 ```
 func main() {
@@ -36,6 +33,6 @@ func main() {
 		time.Sleep(4 * time.Second)
 		c.String(http.StatusOK, "pong")
 	})
-	r.Run()
+    r.Run()
 }
 ```
