@@ -3,7 +3,7 @@
  * @Date: 2021/12/26 20:05
  */
 
-// ContextTimeout中间件的测试用例
+// Test cases of ContextTimeout Middleware
 
 package timeout
 
@@ -22,12 +22,11 @@ func TestContextTimeout(t *testing.T) {
 	opt := Option{
 		Timeout: &timeout,
 		Code:    500,
-		Msg:     []byte("超时"),
+		Msg:     []byte("handle timeout"),
 	}
 
 	r.Use(ContextTimeout(opt))
 	r.GET("/ping", func(c *gin.Context) {
-		fmt.Println("访问ping")
 		time.Sleep(6 * time.Second)
 		c.String(http.StatusOK, "pong")
 	})

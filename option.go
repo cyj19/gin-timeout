@@ -7,9 +7,9 @@ package timeout
 
 import "time"
 
-// Option 超时配置
+// Option timeout configuration
 type Option struct {
-	Timeout *time.Duration
-	Code    int
-	Msg     []byte
+	Timeout *time.Duration // The timeout time is generally configured in the configuration file. In order to facilitate hot update, use the pointer
+	Code    int            // response code
+	Msg     []byte         // response message
 }

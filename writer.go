@@ -15,12 +15,12 @@ import (
 
 type timeoutWriter struct {
 	gin.ResponseWriter
-	h           http.Header   // 正常响应头
-	wbuf        *bytes.Buffer // 正常响应内容
+	h           http.Header   // response header
+	wbuf        *bytes.Buffer // response content
 	mu          sync.Mutex
 	timedOut    bool
 	wroteHeader bool
-	code        int
+	code        int // response code
 }
 
 func (tw *timeoutWriter) Header() http.Header {
@@ -63,6 +63,6 @@ func (tw *timeoutWriter) Write(p []byte) (int, error) {
 	if !tw.wroteHeader {
 		tw.WriteHeader(http.StatusOK)
 	}
-	// 正常响应内容写入到wbuf
+	// normal response content is written to wbuf
 	return tw.wbuf.Write(p)
 }
