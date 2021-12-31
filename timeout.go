@@ -48,7 +48,7 @@ func ContextTimeout(opt Option) gin.HandlerFunc {
 		case <-done:
 			tw.mu.Lock()
 			tw.mu.Unlock()
-			dst := c.Writer.Header()
+			dst := tw.ResponseWriter.Header()
 			// add the header of timeoutWriter to the original header
 			for k, vv := range tw.h {
 				dst[k] = vv
