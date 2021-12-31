@@ -7,20 +7,18 @@
 package timeout
 
 import (
-	"bytes"
 	"context"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func ContextTimeout(opt Option) gin.HandlerFunc {
+	bufPool := NewBufferPool()
 	return func(c *gin.Context) {
-		var tw = &timeoutWriter{
-			wbuf:           bytes.NewBufferString(""),
-			ResponseWriter: c.Writer,
-			h:              make(http.Header),
-		}
+
+		tw := NewTimeoutWriter(c.Writer, bufPool.Get())
 		c.Writer = tw
+
 		ctx, cancel := context.WithTimeout(c.Request.Context(), *opt.Timeout)
 		defer cancel()
 
@@ -45,6 +43,7 @@ func ContextTimeout(opt Option) gin.HandlerFunc {
 			tw.ResponseWriter.WriteHeader(opt.Code)
 			_, _ = tw.ResponseWriter.Write([]byte(opt.Msg))
 			tw.timedOut = true
+			tw.Reset()
 			c.Abort()
 		case <-done:
 			tw.mu.Lock()
@@ -59,6 +58,7 @@ func ContextTimeout(opt Option) gin.HandlerFunc {
 			}
 			tw.ResponseWriter.WriteHeader(tw.code)
 			_, _ = tw.ResponseWriter.Write(tw.wbuf.Bytes())
+			tw.Reset()
 		}
 	}
 }

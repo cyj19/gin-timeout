@@ -13,7 +13,7 @@ import (
 	"sync"
 )
 
-type timeoutWriter struct {
+type TimeoutWriter struct {
 	gin.ResponseWriter
 	h           http.Header   // response header
 	wbuf        *bytes.Buffer // response content
@@ -23,7 +23,15 @@ type timeoutWriter struct {
 	code        int // response code
 }
 
-func (tw *timeoutWriter) Header() http.Header {
+func NewTimeoutWriter(w gin.ResponseWriter, buf *bytes.Buffer) *TimeoutWriter {
+	return &TimeoutWriter{
+		wbuf:           buf,
+		ResponseWriter: w,
+		h:              make(http.Header),
+	}
+}
+
+func (tw *TimeoutWriter) Header() http.Header {
 	return tw.h
 }
 
@@ -33,7 +41,7 @@ func checkWriteHeaderCode(code int) {
 	}
 }
 
-func (tw *timeoutWriter) writeHeaderLocked(code int) {
+func (tw *TimeoutWriter) writeHeaderLocked(code int) {
 	checkWriteHeaderCode(code)
 
 	switch {
@@ -48,13 +56,13 @@ func (tw *timeoutWriter) writeHeaderLocked(code int) {
 	}
 }
 
-func (tw *timeoutWriter) WriteHeader(code int) {
+func (tw *TimeoutWriter) WriteHeader(code int) {
 	tw.mu.Lock()
 	tw.mu.Unlock()
 	tw.writeHeaderLocked(code)
 }
 
-func (tw *timeoutWriter) Write(p []byte) (int, error) {
+func (tw *TimeoutWriter) Write(p []byte) (int, error) {
 	tw.mu.Lock()
 	tw.mu.Unlock()
 	if tw.timedOut {
@@ -65,4 +73,8 @@ func (tw *timeoutWriter) Write(p []byte) (int, error) {
 	}
 	// normal response content is written to wbuf
 	return tw.wbuf.Write(p)
+}
+
+func (tw *TimeoutWriter) Reset() {
+	tw.wbuf.Reset()
 }

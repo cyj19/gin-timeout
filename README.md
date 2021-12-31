@@ -1,7 +1,7 @@
 # gin-timeout
 
 ![gin-timeout](https://img.shields.io/github/license/cyj19/gin-timeout)  
-a simple and practical gin timeout Middleware
+a simple and practical timeout middleware for gin
 
 
 
