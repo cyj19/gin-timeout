@@ -39,7 +39,7 @@ func ContextTimeout(opt Option) gin.HandlerFunc {
 			panic(p)
 		case <-ctx.Done():
 			tw.mu.Lock()
-			tw.mu.Unlock()
+			defer tw.mu.Unlock()
 			tw.ResponseWriter.WriteHeader(opt.Code)
 			_, _ = tw.ResponseWriter.Write([]byte(opt.Msg))
 			tw.timedOut = true
@@ -47,7 +47,7 @@ func ContextTimeout(opt Option) gin.HandlerFunc {
 			c.Abort()
 		case <-done:
 			tw.mu.Lock()
-			tw.mu.Unlock()
+			defer tw.mu.Unlock()
 			dst := tw.ResponseWriter.Header()
 			// add the header of timeoutWriter to the original header
 			for k, vv := range tw.h {

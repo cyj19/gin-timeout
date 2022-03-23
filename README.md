@@ -33,6 +33,6 @@ func main() {
 		time.Sleep(4 * time.Second)
 		c.String(http.StatusOK, "pong")
 	})
-    r.Run()
+    r.Run(":8888")
 }
 ```

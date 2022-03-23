@@ -58,13 +58,13 @@ func (tw *TimeoutWriter) writeHeaderLocked(code int) {
 
 func (tw *TimeoutWriter) WriteHeader(code int) {
 	tw.mu.Lock()
-	tw.mu.Unlock()
+	defer tw.mu.Unlock()
 	tw.writeHeaderLocked(code)
 }
 
 func (tw *TimeoutWriter) Write(p []byte) (int, error) {
 	tw.mu.Lock()
-	tw.mu.Unlock()
+	defer tw.mu.Unlock()
 	if tw.timedOut {
 		return 0, nil
 	}
